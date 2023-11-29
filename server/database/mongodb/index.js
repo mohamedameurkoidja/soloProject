@@ -1,15 +1,36 @@
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1/YOUR_DATABASE_NAME_HERE');
+const mongoose = require("mongoose");
+mongoose
+  .connect("mongodb://localhost:27017/library")
+  .then(() => {
+    console.log("conected");
+  })
+  .catch((err) => {
+    console.log("err", err);
+  });
 
+let bookSchema = mongoose.Schema({
+  title: String,
+  Image: String,
+  prix: Number,
+  
+});
 
-  // ADD your Schema here!
+const books = mongoose.model("book", bookSchema);
 
-  // ADD the Model compiled from the above Schema
+let add = async(book)=>{
+  return await books.create(book)
+}
+let getall= async(book)=>{
+  return await books.find(book)
+}
+let deletebook= async(book)=>{
+  return await books.deleteOne(book)
+}
+let updetebook= async(id,book)=>{
+  return await books.findOneAndUpdate({_id:id},book)
+}
+let serchbook= async(book)=>{
+  return await books.findOne({title: book})
+}
 
-
-  // ADD Functions to interact with the Schema
-
-// Don't forget to export your functions!
-module.exports = {
-
-};
+module.exports = {updetebook,deletebook,getall,add,serchbook};
